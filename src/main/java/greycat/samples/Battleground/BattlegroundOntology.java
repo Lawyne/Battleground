@@ -1,10 +1,16 @@
-package Battleground;
+package greycat.samples.Battleground;
+
+
 
 
 import greycat.Graph;
 import greycat.GraphBuilder;
-import greycat.Node;
+import greycat.Task;
 import greycat.Type;
+import greycat.Node;
+import static greycat.Tasks.*;
+import static greycat.internal.task.CoreActions.*;
+
 
 public class BattlegroundOntology {
 
@@ -14,9 +20,29 @@ public class BattlegroundOntology {
         Graph g = new GraphBuilder().build();
 
         //Connect the graph
-        g.connect(isConnected -> {
+        g.connect((Boolean isConnected) -> {
             //Display that the graph database is connected!
             System.out.println("Connected : " + isConnected);
+
+            //TRYING HERE !!!
+            newTask()
+                    .loop("1","2",
+                            newTask()
+                                .then(createNode())
+                                .then(setAttribute("name",Type.STRING,"node_{{i}}"))
+                                .then(travelInTime("0"))
+                                .then(println("{{result}}")))
+
+                    .execute(g,null);
+
+            /*
+            loop("0", "3",
+                    .newNode()
+                            .setProperty("name", Type.STRING, "node_{{i}}")
+                            .print("{{result}}")
+            ).execute(g,null);
+            /////
+
 
             Node sensor0 = g.newNode(0, 0); //create a new node for world 0 and time 0
             sensor0.set("sensorId", Type.INT, 12); //set the id attribute as an integer
@@ -44,8 +70,12 @@ public class BattlegroundOntology {
                     System.out.println("GoodBye!");
                 });
 
-            });
+            }); */
 
+
+            g.disconnect(result -> {
+                System.out.println("GoodBye!");
+            });
         });
     }
 
