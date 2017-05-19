@@ -3,11 +3,7 @@ package greycat.samples.Battleground;
 
 
 
-import greycat.Graph;
-import greycat.GraphBuilder;
-import greycat.Task;
-import greycat.Type;
-import greycat.Node;
+import greycat.*;
 import static greycat.Tasks.*;
 import static greycat.internal.task.CoreActions.*;
 
@@ -26,12 +22,27 @@ public class BattlegroundOntology {
 
             //TRYING HERE !!!
             newTask()
-                    .loop("1","2",
+                    .loop("1","10",
                             newTask()
                                 .then(createNode())
                                 .then(setAttribute("name",Type.STRING,"node_{{i}}"))
+                                .then(setAttribute("type",Type.STRING,"Tank"))
+                                    ///Trying to math i
+                                .then(setAttribute("power",Type.DOUBLE,"{{i}}"))
                                 .then(travelInTime("0"))
                                 .then(println("{{result}}")))
+
+                    .execute(g,null);
+
+            newTask()
+                    .loop("1","14",
+                            newTask()
+                                    .then(createNode())
+                                    .then(setAttribute("name",Type.STRING,"node_{{i}}"))
+                                    .then(setAttribute("type",Type.STRING,"Target"))
+                                    .then(setAttribute("resilience",Type.DOUBLE,"{{i}}"))
+                                    .then(travelInTime("0"))
+                                    .then(println("{{result}}")))
 
                     .execute(g,null);
 
