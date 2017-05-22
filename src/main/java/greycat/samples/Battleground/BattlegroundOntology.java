@@ -4,6 +4,8 @@ package greycat.samples.Battleground;
 
 
 import greycat.*;
+import greycat.internal.task.math.MathExpressionEngine;
+import greycat.internal.task.math.CoreMathExpressionEngine;
 import static greycat.Tasks.*;
 import static greycat.internal.task.CoreActions.*;
 
@@ -24,13 +26,35 @@ public class BattlegroundOntology {
             newTask()
                     .loop("1","10",
                             newTask()
-                                .then(createNode())
-                                .then(setAttribute("name",Type.STRING,"node_{{i}}"))
-                                .then(setAttribute("type",Type.STRING,"Tank"))
                                     ///Trying to math i
-                                .then(setAttribute("power",Type.DOUBLE,"{{i}}"))
-                                .then(travelInTime("0"))
-                                .then(println("{{result}}")))
+                                   /*.thenDo(new ActionFunction() {
+                                        @Override
+                                        public void eval(TaskContext taskContext) {
+                                            MathExpressionEngine engine = CoreMathExpressionEngine.parse("5*4");
+                                            double res = engine.eval(null,null,null);
+                                            taskContext.continueTask();
+                                        }
+                                    })*/
+                                    //.then(inject(10))
+                                    //.then(defineAsVar("it"))
+                                    //.then(print("{{it}}"))
+                                    //.inject("{{=4*i}}")
+                                    .thenDo(new ActionFunction() {
+                                        @Override
+                                        public void eval(TaskContext ctx) {
+                                            ctx.continueWith(ctx.wrap(ctx.template("{{=4*i}}")).clone());
+                                        }
+                                    })
+                                   //.log("{{result}}")
+                                   // .then(inject(CoreMathExpressionEngine.parse("4*{{i}}").eval(null,null,null)))
+                                    .then(defineAsVar("res"))
+                                    .then(println("{{res}}"))
+                                    .then(createNode())
+                                    .then(setAttribute("name",Type.STRING,"node_{{i}}"))
+                                    .then(setAttribute("type",Type.STRING,"Tank"))
+                                    .then(setAttribute("power",Type.DOUBLE,"{{res}}"))
+                                    .then(travelInTime("0"))
+                                    .then(println("{{result}}")))
 
                     .execute(g,null);
 
