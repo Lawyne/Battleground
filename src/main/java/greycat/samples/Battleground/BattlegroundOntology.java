@@ -12,6 +12,8 @@ public class BattlegroundOntology {
 
     public static void main(String[] args) {
 
+
+
         //Create a minimal graph with the default configuration
         Graph g = new GraphBuilder().build();
 
@@ -45,7 +47,11 @@ public class BattlegroundOntology {
                                             ctx.continueWith(ctx.wrap(ctx.template("{{=10*i}}")).clone());
                                         }
                                     })
-                                    //.log("{{result}}")
+                                    //ICI !!!!!!
+                                   // .inject(58)
+                                   // .setAsVar("integer")
+                                   // .executeExpression("10+i[0]")
+                                   // .log("{{result}}")
                                     //.then(inject(CoreMathExpressionEngine.parse("4*{{i}}").eval(null,null,null)))
                                     .defineAsVar("res")
                                     //.println("{{res}}")
@@ -63,10 +69,15 @@ public class BattlegroundOntology {
                                     .setAttribute("type",Type.STRING,"Tank")
                                     .setAttribute("power",Type.DOUBLE,"{{res}}")
                                     .addVarToRelation("linked_to","x")
-                                    .addVarToRelation("linked_to","y")
-                                    .addVarToRelation("linked_to","y")
+                                    .addVarToRelation("linked_to","y","type")
+                                    .addVarToRelation("linked_to","y","type")
+                                    .traverse("linked_to","type","Weapon")
                                     .travelInTime("0")
-                                    .println("{{result}}"))
+                                    .println("{{result}}")
+                                    //.readGlobalIndex("nodes")
+
+
+                    )
 
                     .execute(g,null);
 
