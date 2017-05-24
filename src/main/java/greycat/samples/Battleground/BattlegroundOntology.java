@@ -4,8 +4,6 @@ package greycat.samples.Battleground;
 
 
 import greycat.*;
-import greycat.internal.task.math.MathExpressionEngine;
-import greycat.internal.task.math.CoreMathExpressionEngine;
 import static greycat.Tasks.*;
 import static greycat.internal.task.CoreActions.*;
 
@@ -21,6 +19,8 @@ public class BattlegroundOntology {
         g.connect((Boolean isConnected) -> {
             //Display that the graph database is connected!
             System.out.println("Connected : " + isConnected);
+
+            Node linkedNode = g.newNode(0,0);
 
             //TRYING HERE !!!
             newTask()
@@ -42,31 +42,44 @@ public class BattlegroundOntology {
                                     .thenDo(new ActionFunction() {
                                         @Override
                                         public void eval(TaskContext ctx) {
-                                            ctx.continueWith(ctx.wrap(ctx.template("{{=4*i}}")).clone());
+                                            ctx.continueWith(ctx.wrap(ctx.template("{{=10*i}}")).clone());
                                         }
                                     })
-                                   //.log("{{result}}")
-                                   // .then(inject(CoreMathExpressionEngine.parse("4*{{i}}").eval(null,null,null)))
-                                    .then(defineAsVar("res"))
-                                    .then(println("{{res}}"))
-                                    .then(createNode())
-                                    .then(setAttribute("name",Type.STRING,"node_{{i}}"))
-                                    .then(setAttribute("type",Type.STRING,"Tank"))
-                                    .then(setAttribute("power",Type.DOUBLE,"{{res}}"))
-                                    .then(travelInTime("0"))
-                                    .then(println("{{result}}")))
+                                    //.log("{{result}}")
+                                    //.then(inject(CoreMathExpressionEngine.parse("4*{{i}}").eval(null,null,null)))
+                                    .defineAsVar("res")
+                                    //.println("{{res}}")
+                                    .inject(linkedNode)
+                                    .defineAsVar("x")
+                                    .travelInTime("0")
+                                    .createNode()
+                                    .setAttribute("name",Type.STRING,"linked_node_{{i}}")
+                                    .setAttribute("type",Type.STRING,"Weapon")
+                                    .setAttribute("power",Type.DOUBLE,"{{res}}")
+                                    //.println("{{result}}")
+                                    .defineAsVar("y")
+                                    .createNode()
+                                    .setAttribute("name",Type.STRING,"node_{{i}}")
+                                    .setAttribute("type",Type.STRING,"Tank")
+                                    .setAttribute("power",Type.DOUBLE,"{{res}}")
+                                    .addVarToRelation("linked_to","x")
+                                    .addVarToRelation("linked_to","y")
+                                    .addVarToRelation("linked_to","y")
+                                    .travelInTime("0")
+                                    .println("{{result}}"))
 
                     .execute(g,null);
 
             newTask()
                     .loop("1","14",
                             newTask()
-                                    .then(createNode())
-                                    .then(setAttribute("name",Type.STRING,"node_{{i}}"))
-                                    .then(setAttribute("type",Type.STRING,"Target"))
-                                    .then(setAttribute("resilience",Type.DOUBLE,"{{i}}"))
-                                    .then(travelInTime("0"))
-                                    .then(println("{{result}}")))
+                                    .createNode()
+                                    .setAttribute("name",Type.STRING,"node_{{i}}")
+                                    .setAttribute("type",Type.STRING,"Target")
+                                    .setAttribute("resilience",Type.DOUBLE,"{{i}}")
+                                    .addVarToRelation("can_destroy", "1", "1")
+                                    .travelInTime("0")
+                                    .println("{{result}}"))
 
                     .execute(g,null);
 
