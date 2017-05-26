@@ -23,7 +23,8 @@ public class BattlegroundOntology {
             System.out.println("Connected : " + isConnected);
 
             Node linkedNode = g.newNode(0,0);
-
+            linkedNode.set("type", Type.STRING, "none");
+            
             //TRYING HERE !!!
             newTask()
                     .loop("1","10",
@@ -63,14 +64,26 @@ public class BattlegroundOntology {
                                     .setAttribute("type",Type.STRING,"Weapon")
                                     .setAttribute("power",Type.DOUBLE,"{{res}}")
                                     //.println("{{result}}")
+                                    .defineAsVar("y").createNode()
+                                    .setAttribute("name",Type.STRING,"linked_node_{{i}}")
+                                    .setAttribute("type",Type.STRING,"Weapon")
+                                    .setAttribute("power",Type.DOUBLE,"{{res}}")
+                                    //.println("{{result}}")
                                     .defineAsVar("y")
+                                    .createNode()
+                                    .setAttribute("name",Type.STRING,"linked_z_node_{{i}}")
+                                    .setAttribute("type",Type.STRING,"Weapon")
+                                    .setAttribute("power",Type.DOUBLE,"{{res}}")
+                                    //.println("{{result}}")
+                                    .defineAsVar("z")
                                     .createNode()
                                     .setAttribute("name",Type.STRING,"node_{{i}}")
                                     .setAttribute("type",Type.STRING,"Tank")
                                     .setAttribute("power",Type.DOUBLE,"{{res}}")
-                                    .addVarToRelation("linked_to","x")
+                                    .addVarToRelation("linked_to","x","type")
                                     .addVarToRelation("linked_to","y","type")
-                                    .addVarToRelation("linked_to","y","type")
+                                    .addVarToRelation("linked_to","z","type")
+                                    .println("{{result}}")
                                     .traverse("linked_to","type","Weapon")
                                     .travelInTime("0")
                                     .println("{{result}}")
