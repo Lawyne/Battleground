@@ -102,6 +102,7 @@ public class BattlegroundOntology {
                     .println("===================================================")
                     .println("From outside the loop")
                     .println("{{result}}")
+                    .travelInTime("0")
                     .readGlobalIndex("{{result[0]}}")
                     .println("{{result}}")
                     .execute(g,null);
@@ -112,6 +113,7 @@ public class BattlegroundOntology {
                     .println("")
                     .println("===================================================")
                     .println("From outside the task")
+                    .travelInTime("0")
                     .println("{{result}}")
                     .readGlobalIndex("{{result[1]}}")
                     .println("{{result}}")
