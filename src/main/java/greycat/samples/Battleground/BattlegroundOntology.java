@@ -83,14 +83,39 @@ public class BattlegroundOntology {
                                     .addVarToRelation("linked_to","x","type")
                                     .addVarToRelation("linked_to","y","type")
                                     .addVarToRelation("linked_to","z","type")
-                                    .println("{{result}}")
+                                    //.println("{{result}}")
                                     .traverse("linked_to","type","Weapon")
                                     .travelInTime("0")
+                                    //.println("{{result}}")
+                                    .addToGlobalIndex("nodes","y")
+                                    .addToGlobalIndex("nodes0","z")
+                                    .indexNames()
                                     .println("{{result}}")
-                                    //.readGlobalIndex("nodes")
+                                    .readGlobalIndex("{{result[0]}}")
+                                    .println("{{result}}")
 
 
                     )
+                    .indexNames()
+                    .println("")
+                    .println("")
+                    .println("===================================================")
+                    .println("From outside the loop")
+                    .println("{{result}}")
+                    .readGlobalIndex("{{result[0]}}")
+                    .println("{{result}}")
+                    .execute(g,null);
+
+            newTask()
+                    .indexNames()
+                    .println("")
+                    .println("")
+                    .println("===================================================")
+                    .println("From outside the task")
+                    .println("{{result}}")
+                    .readGlobalIndex("{{result[1]}}")
+                    .println("{{result}}")
+
 
                     .execute(g,null);
 
@@ -103,7 +128,9 @@ public class BattlegroundOntology {
                                     .setAttribute("resilience",Type.DOUBLE,"{{i}}")
                                     .addVarToRelation("can_destroy", "1", "1")
                                     .travelInTime("0")
-                                    .println("{{result}}"))
+                                    //.println("{{result}}")
+
+                    )
 
                     .execute(g,null);
 
